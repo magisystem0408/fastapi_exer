@@ -1,9 +1,6 @@
 from typing import Optional, List
-
-import data as data
 from fastapi import FastAPI
-from pydantic import BaseModel
-
+from pydantic import BaseModel, Field
 
 # # オペレーションという
 # @app.get("/")
@@ -36,19 +33,17 @@ class ShopInfo(object):
 
 # モデル作成
 class Item(BaseModel):
-    name: str
+    # バリテーション
+    name: str = Field(min_length=4, max_length=12)
     description: Optional[str] = None
     price: int
     tax: Optional[float] = None
-
 
 class Data(BaseModel):
     ShopInfo: Optional[ShopInfo]
     items: List[Item]
 
-
 app = FastAPI()
-
 
 @app.post("/item/")
 #     型をセットしてあげる
